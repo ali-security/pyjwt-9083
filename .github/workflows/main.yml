@@ -12,8 +12,6 @@ jobs:
   tests:
     name: "Python ${{ matrix.python-version }} on ${{ matrix.platform }}"
     runs-on: "${{ matrix.platform }}"
-    env:
-      USING_COVERAGE: '3.8'
 
     strategy:
       matrix:
@@ -37,28 +35,6 @@ jobs:
 
       - name: "Run tox targets for ${{ matrix.python-version }}"
         run: "python -m tox"
-
-      # We always use a modern Python version for combining coverage to prevent
-      # parsing errors in older versions for modern code.
-      - uses: "actions/setup-python@v5"
-        with:
-          python-version: "3.8"
-
-      - name: "Combine coverage"
-        run: |
-          set -xe
-          python -m pip install coverage[toml]
-          python -m coverage combine
-          python -m coverage xml
-        if: "contains(env.USING_COVERAGE, matrix.python-version) && matrix.platform == 'ubuntu-latest'"
-
-      - name: "Upload coverage to Codecov"
-        if: "contains(env.USING_COVERAGE, matrix.python-version) && matrix.platform == 'ubuntu-latest'"
-        uses: "codecov/codecov-action@v4"
-        with:
-          fail_ci_if_error: true
-          token: ${{ secrets.CODECOV_TOKEN }}
-          verbose: true
 
   package:
     name: "Build & verify package"

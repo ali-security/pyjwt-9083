@@ -2,22 +2,6 @@
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
-[tool.coverage.run]
-parallel = true
-branch = true
-source = ["jwt"]
-
-[tool.coverage.paths]
-source = ["jwt", ".tox/*/site-packages"]
-
-[tool.coverage.report]
-show_missing = true
-exclude_lines = ["if TYPE_CHECKING:", "pragma: no cover"]
-
-[tool.isort]
-profile = "black"
-atomic = true
-combine_as_imports = true
 
 [tool.mypy]
 python_version = 3.11
